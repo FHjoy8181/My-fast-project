@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BADC ঠিকাদার সাইট ও দৈনিক হিসাব</title>
+  <style>
+    :root {
+      --primary: #14532d;
+      --primary-2: #166534;
+      --accent: #15803d;
+      --bg: #f3f6f4;
+      --card: #ffffff;
+      --text: #111827;
+      --muted: #6b7280;
+      --border: #d1d5db;
+      --danger: #b91c1c;
+      --warn: #b45309;
+      --soft-green: #dcfce7;
+      --soft-amber: #fef3c7;
+      --soft-red: #fee2e2;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: "Hind Siliguri", "Noto Sans Bengali", system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.45;
+    }
+
+    .topbar {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #fff;
+      padding: 14px 16px;
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+    }
+
+    .topbar-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .brand p {
+      margin: 2px 0 0;
+      font-size: 12px;
+      opacity: 0.9;
+    }
+
+    .role-controls {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.35);
+    }
+
+    .container {
+      max-width: 1080px;
+      margin: 14px auto 40px;
+      padding: 0 12px;
+    }
+
+    .project-selector-bar {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin-bottom: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .project-selector-bar label {
+      font-weight: 700;
+      color: var(--primary);
+      display: block;
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+
+    select, input, textarea {
+      width: 100%;
+      padding: 9px 11px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 14px;
+      background: #fff;
+      color: var(--text);
+    }
+
+    select:focus, input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(21, 128, 61, 0.14);
+    }
+
+    .btn {
+      border: none;
+      border-radius: 8px;
+      padding: 8px 13px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: 0.15s ease;
+    }
+
+    .btn:hover { opacity: 0.92; }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-secondary { background: #e5e7eb; color: #111827; }
+    .btn-warn { background: var(--warn); color: #fff; }
+    .btn-danger { background: var(--danger); color: #fff; }
+    .btn-light { background: #fff; color: var(--primary); }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .stat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+    }
+
+    .stat-title {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .stat-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--primary);
+      margin: 3px 0;
+    }
+
+    .stat-sub {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      margin-bottom: 14px;
+    }
+
+    .tab-btn {
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 9px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .tab-btn.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 14px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 14px;
+    }
+
+    .card h2 {
+      margin: 0 0 10px;
+      font-size: 16px;
+      color: var(--primary);
+      border-bottom: 1px solid #eef2f0;
+      padding-bottom: 6px;
+    }
+
+    .form-row {
+      margin-bottom: 10px;
+    }
+
+    .form-row label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .list-item {
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+      background: #fafafa;
+    }
+
+    .list-item-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+      font-weight: 700;
+    }
+
+    .meta {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 3px;
+    }
+
+    .photo-preview {
+      max-width: 140px;
+      max-height: 110px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      margin-top: 8px;
+      object-fit: cover;
+      cursor: pointer;
+    }
+
+    .photo-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .progress-wrap {
+      background: #e5e7eb;
+      border-radius: 999px;
+      height: 10px;
+      overflow: hidden;
+      margin-top: 6px;
+    }
+
+    .progress-bar {
+      background: var(--accent);
+      height: 100%;
+      transition: width 0.25s ease;
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .pill-green { background: var(--soft-green); color: var(--primary); }
+    .pill-amber { background: var(--soft-amber); color: var(--warn); }
+    .pill-red { background: var(--soft-red); color: var(--danger); }
+
+    .admin-only {
+      display: none;
+    }
+
+    body.is-admin .admin-only {
+      display: inline-flex;
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.65);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 60;
+      padding: 14px;
+    }
+
+    .modal-backdrop.show { display: flex; }
+
+    .modal-box {
+      background: #fff;
+      border-radius: 12px;
+      padding: 16px;
+      max-width: 520px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-box img {
+      max-width: 100%;
+      border-radius: 8px;
+    }
+
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <h1>🏗️ BADC ঠিকাদার সাইট ও দৈনিক হিসাব</h1>
+        <p>প্রজেক্ট • লেবার সংখ্যা ও ছবি • দিন-দিন খরচ • কাজের অগ্রগতি • মালামাল</p>
+      </div>
+      <div class="role-controls">
+        <span id="roleBadge" class="badge">👷 স্টাফ মোড (শুধু যোগ করা যাবে)</span>
+        <button id="adminToggleBtn" class="btn btn-light" onclick="openPinModal()">🔐 অ্যাডমিন লগইন</button>
+        <button id="staffLockBtn" class="btn btn-warn hidden" onclick="lockStaffMode()">🔒 স্টাফ মোড চালু করুন</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="project-selector-bar">
+      <div style="flex: 1; min-width: 240px;">
+        <label for="activeProjectSelect">🎯 সক্রিয় প্রজেক্ট (একসাথে একটি প্রজেক্ট দেখুন)</label>
+        <select id="activeProjectSelect" onchange="onProjectChange()"></select>
+      </div>
+      <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:flex-end;">
+        <button class="btn btn-secondary" onclick="exportData()">⬇️ ব্যাকআপ (JSON)</button>
+        <button class="btn btn-secondary" onclick="document.getElementById('importFileInput').click()">⬆️ রিস্টোর</button>
+        <input id="importFileInput" type="file" accept=".json" class="hidden" onchange="importData(event)" />
+        <button class="btn btn-danger admin-only" onclick="resetAllDemoData()">🗑️ সব ডাটা রিসেট</button>
+      </div>
+    </section>
+
+    <section class="stats-grid" id="statsGrid"></section>
+
+    <nav class="tabs">
+      <button class="tab-btn active" data-tab="projects" onclick="switchTab('projects')">📁 প্রজেক্টসমূহ</button>
+      <button class="tab-btn" data-tab="labor" onclick="switchTab('labor')">👷 লেবার সংখ্যা ও ছবি</button>
+      <button class="tab-btn" data-tab="expenses" onclick="switchTab('expenses')">💸 দিন-দিন খরচ</button>
+      <button class="tab-btn" data-tab="progress" onclick="switchTab('progress')">📊 কাজ ও ছবি</button>
+      <button class="tab-btn" data-tab="materials" onclick="switchTab('materials')">🧱 মালামাল হিসাব</button>
+    </nav>
+
+    <!-- TAB 1: PROJECTS -->
+    <section id="tab-projects" class="tab-panel">
+      <div class="grid-2">
+        <div class="card">
+          <h2>➕ নতুন BADC প্রজেক্ট যোগ করুন</h2>
+          <form onsubmit="addProject(event)">
+            <div class="form-row">
+              <label>প্রজেক্টের নাম *</label>
+              <input type="text" id="projName" required placeholder="যেমন: কুষ্টিয়া সদর সেচ নালা লাইনিং প্রকল্প" />
+            </div>
+            <div class="form-grid-2">
+              <div class="form-row">
+                <label>ওয়ার্ক অর্ডার / লট নং</label>
+                <input type="text" id="projWO" placeholder="WO-BADC/2026-01" />
+              </div>
+              <div class="form-row">
+                <label>শুরুর কাজের অগ্রগতি (%)</label>
+                <input type="number" id="projProgress" min="0" max="100" value="0" />
+              </div>
+            </div>
+            <div class="form-row">
+              <label>সাইটের লোকেশন / নোট</label>
+              <input type="text" id="projLocation" placeholder="উপজেলা / ইউনিয়ন / মৌজা" />
+            </div>
+            <button type="submit" class="btn btn-primary">✅ প্রজেক্ট সেভ করুন</button>
+          </form>
+        </div>
+
+        <div class="card">
+          <h2>📋 সংরক্ষিত প্রজেক্টসমূহ</h2>
+          <div id="projectsList"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: LABOR + PHOTOS -->
+    <section id="tab-labor" class="tab-panel hidden">
+      <div class="grid-2">
+        <div class="card">
+          <h2>👷 প্রতিদিনের লেবার সংখ্যা ও ছবি যোগ করুন</h2>
+          <form onsubmit="addLaborEntry(event)">
+            <div class="form-grid-2">
+              <div class="form-row">
+                <label>তারিখ *</label>
+                <input type="date" id="laborDate" required />
+              </div>
+              <div class="form-row">
+                <label>মিস্ত্রি সংখ্যা</label>
+                <input type="number" id="masonCount" min="0" value="0" oninput="updateTotalLaborPreview()" />
+              </div>
+            </div>
+            <div class="form-grid-2">
+              <div class="form-row">
+                <label>লেবার / হেলপার সংখ্যা</label>
+                <input type="number" id="helperCount" min="0" value="0" oninput="updateTotalLaborPreview()" />
+              </div>
+              <div class="form-row">
+                <label>মোট লেবার (অটো)</label>
+                <input type="number" id="totalLaborPreview" readonly value="0" style="background:#f3f4f6; font-weight:700;" />
+              </div>
+            </div>
+            <div class="form-row">
+              <label>কাজের বিবরণ / নোট</label>
+              <input type="text" id="laborNote" placeholder="যেমন: নালা ঢালাই ও মাটি কাটার কাজ" />
+            </div>
+            <div class="form-row">
+              <label>লেবারদের ছবি (ক্যামেরা বা গ্যালারি)</label>
+              <input type="file" id="laborPhotoInput" accept="image/*" capture="environment" onchange="handleImageUpload(event, 'labor')" />
+              <img id="laborPhotoPreview" class="photo-preview hidden" alt="লেবার প্রিভিউ" />
+            </div>
+            <button type="submit" class="btn btn-primary">✅ লেবার স্টেটমেন্ট সেভ করুন</button>
+          </form>
+        </div>
+
+        <div class="card">
+          <h2>📸 লেবার স্টেটমেন্ট ও ছবির তালিকা</h2>
+          <div id="laborList"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: DAILY EXPENSES -->
+    <section id="tab-expenses" class="tab-panel hidden">
+      <div class="grid-2">
+        <div class="card">
+          <h2>💸 দিন-দিন খরচের হিসাব</h2>
+          <form onsubmit="addExpense(event)">
+            <div class="form-grid-2">
+              <div class="form-row">
+                <label>তারিখ *</label>
+                <input type="date" id="expDate" required />
+              </div>
+              <div class="form-row">
+                <label>খরচের পরিমাণ (টাকা) *</label>
+                <input type="number" id="expAmount" min="1" required placeholder="0" />
+              </div>
+            </div>
+            <div class="form-row">
+              <label>খরচের খাত / বিবরণ *</label>
+              <input type="text" id="expTitle" required placeholder="যেমন: লেবার হাজিরা / গাড়ি ভাড়া / নাস্তা / বিবিধ" />
+            </div>
+            <div class="form-row">
+              <label>কাকে দিলেন / ভাউচার নোট</label>
+              <input type="text" id="expNote" placeholder="নাম বা অতিরিক্ত তথ্য" />
+            </div>
+            <button type="submit" class="btn btn-primary">✅ খরচ যোগ করুন</button>
+          </form>
+        </div>
+
+        <div class="card">
+          <h2>🧾 দিন-দিন খরচের তালিকা</h2>
+          <div id="expensesList"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: PROGRESS & SITE PHOTOS -->
+    <section id="tab-progress" class="tab-panel hidden">
+      <div class="grid-2">
+        <div class="card">
+          <h2>📊 কাজের অগ্রগতি (%) ও সাইটের ছবি</h2>
+          <form onsubmit="addProgressEntry(event)">
+            <div class="form-grid-2">
+              <div class="form-row">
+                <label>তারিখ *</label>
+                <input type="date" id="progDate" required />
+              </div>
+              <div class="form-row">
+                <label>কত পার্সেন্ট কাজ রানিং (%) *</label>
+                <input type="number" id="progPercent" min="0" max="100" required placeholder="0 - 100" />
+              </div>
+            </div>
+            <div class="form-row">
+              <label>কাজের আপডেট নোট</label>
+              <input type="text" id="progNote" placeholder="যেমন: ৬০ ফুট সেচ নালা সম্পন্ন" />
+            </div>
+            <div class="form-row">
+              <label>সাইটের রানিং ছবি</label>
+              <input type="file" id="progPhotoInput" accept="image/*" capture="environment" onchange="handleImageUpload(event, 'progress')" />
+              <img id="progPhotoPreview" class="photo-preview hidden" alt="সাইট ছবি প্রিভিউ" />
+            </div>
+            <button type="submit" class="btn btn-primary">✅ অগ্রগতি ও ছবি সেভ করুন</button>
+          </form>
+        </div>
+
+        <div class="card">
+          <h2>🖼️ সাইটের অগ্রগতি ও ছবি</h2>
+          <div id="progressList"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 5: MATERIALS (ROD, CEMENT, CUSTOM ITEMS) -->
+    <section id="tab-materials" class="tab-panel hidden">
+      <div class="grid-2">
+        <div class="card">
+          <h2>🧱 মালামালের চাহিদা যোগ করুন (রড, সিমেন্ট বা যেকোনোটি)</h2>
+          <form onsubmit="addMaterialRequirement(event)">
+            <div class="form-grid-2">
+              <div class="form-row">
+                <label>মালামালের ধরন</label>
+                <select id="matTypeSelect" onchange="toggleCustomMatName()">
+                  <option value="রড">রড</option>
+                  <option value="সিমেন্ট">সিমেন্ট</option>
+                  <option value="বালু">বালু</option>
+                  <option value="ইট / খোয়া">ইট / খোয়া</option>
+                  <option value="পাইপ">পাইপ</option>
+                  <option value="OTHER">অন্য মালামাল (নিজে নাম লিখুন)</option>
+                </select>
+              </div>
+              <div class="form-row">
+                <label>একক (Unit)</label>
+                <input type="text" id="matUnit" value="কেজি" placeholder="কেজি / ব্যাগ / সিএফটি / পিস" />
+              </div>
+            </div>
+            <div class="form-row hidden" id="customMatNameRow">
+              <label>মালামালের নাম লিখুন *</label>
+              <input type="text" id="customMatName" placeholder="যেমন: পাম্প / জিআই তার / বিটুমিন" />
+            </div>
+            <div class="form-row">
+              <label>এই সাইটে মোট কতটুকু লাগবে? *</label>
+              <input type="number" id="matRequired" min="0.1" step="any" required placeholder="মোট প্রয়োজনীয় পরিমাণ" />
+            </div>
+            <button type="submit" class="btn btn-primary">✅ মালামালের হিসাব যোগ করুন</button>
+          </form>
+
+          <hr style="margin: 16px 0; border: none; border-top: 1px solid #e5e7eb;" />
+
+          <h2>🚚 সাইটে কতটুকু দিলাম তা যোগ করুন</h2>
+          <form onsubmit="addMaterialSupply(event)">
+            <div class="form-row">
+              <label>কোন মালামাল দিচ্ছেন? *</label>
+              <select id="supplyMatSelect"></select>
+            </div>
+            <div class="form-grid-2">
+              <div class="form-row">
+                <label>তারিখ *</label>
+                <input type="date" id="supplyDate" required />
+              </div>
+              <div class="form-row">
+                <label>কতটুকু দিলেন? *</label>
+                <input type="number" id="supplyQty" min="0.1" step="any" required placeholder="পরিমাণ" />
+              </div>
+            </div>
+            <div class="form-row">
+              <label>চালান / সাপ্লায়ার নোট</label>
+              <input type="text" id="supplyNote" placeholder="যেমন: চালান #১২ / ট্রাক নং" />
+            </div>
+            <button type="submit" class="btn btn-primary">✅ সরবরাহ এন্ট্রি সেভ করুন</button>
+          </form>
+        </div>
+
+        <div class="card">
+          <h2>📦 মালামাল: লাগবে বনাম দিয়েছি বনাম বাকি</h2>
+          <div id="materialsSummaryList"></div>
+          <h3 style="margin-top:16px; font-size:14px; color:var(--muted);">সাম্প্রতিক সরবরাহের লগ</h3>
+          <div id="materialSuppliesLog"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- PIN MODAL -->
+  <div id="pinModal" class="modal-backdrop">
+    <div class="modal-box">
+      <h3 style="margin-top:0;">🔐 অ্যাডমিন পিন দিন</h3>
+      <p class="meta">ডিলিট বা রিসেট করার ক্ষমতা শুধু অ্যাডমিনের থাকবে। (ডিফল্ট পিন: <code>1234</code>)</p>
+      <div class="form-row">
+        <input type="password" id="adminPinInput" placeholder="৪ সংখ্যার পিন লিখুন" />
+      </div>
+      <div style="display:flex; gap:8px; justify-content:flex-end;">
+        <button class="btn btn-secondary" onclick="closePinModal()">বাতিল</button>
+        <button class="btn btn-primary" onclick="verifyAdminPin()">লগইন করুন</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- IMAGE VIEW MODAL -->
+  <div id="imgModal" class="modal-backdrop" onclick="closeImgModal()">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <img id="modalImgEl" src="" alt="বড় ছবি" />
+      <p id="modalImgCaption" class="meta"></p>
+      <div style="text-align:right; margin-top:10px;">
+        <button class="btn btn-secondary" onclick="closeImgModal()">বন্ধ করুন</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = "badc_contractor_app_v1";
+    const ADMIN_PIN = "1234";
+
+    let state = {
+      isAdmin: false,
+      activeProjectId: "p1",
+      projects: [
+        {
+          id: "p1",
+          name: "কুষ্টিয়া সদর সেচ নালা লাইনিং প্রকল্প",
+          wo: "WO-BADC/KUS/2026-104",
+          location: "কুষ্টিয়া সদর",
+          progress: 65
+        }
+      ],
+      laborEntries: [],
+      expenses: [],
+      progressEntries: [],
+      materials: []
+    };
+
+    let tempLaborPhoto = "";
+    let tempProgPhoto = "";
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          state = { ...state, ...parsed, isAdmin: false };
+        }
+      } catch (e) {
+        console.error(e);
+      }
+      if (!state.projects.length) {
+        state.projects.push({
+          id: "p_" + Date.now(),
+          name: "নতুন BADC প্রজেক্ট",
+          wo: "",
+          location: "",
+          progress: 0
+        });
+      }
+      if (!state.projects.some(p => p.id === state.activeProjectId)) {
+        state.activeProjectId = state.projects[0].id;
+      }
+      setDefaultDates();
+      applyRoleUI();
+      renderAll();
+    }
+
+    function saveState() {
+      const toSave = { ...state, isAdmin: false };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(toSave));
+    }
+
+    function setDefaultDates() {
+      const today = new Date().toISOString().split("T")[0];
+      ["laborDate", "expDate", "progDate", "supplyDate"].forEach(id => {
+        const el = document.getElementById(id);
+        if (el && !el.value) el.value = today;
+      });
+    }
+
+    function applyRoleUI() {
+      document.body.classList.toggle("is-admin", state.isAdmin);
+      document.getElementById("roleBadge").textContent = state.isAdmin
+        ? "👑 অ্যাডমিন মোড (ডিলিট ও রিসেট সক্রিয়)"
+        : "👷 স্টাফ মোড (শুধু যোগ করা যাবে)";
+      document.getElementById("adminToggleBtn").classList.toggle("hidden", state.isAdmin);
+      document.getElementById("staffLockBtn").classList.toggle("hidden", !state.isAdmin);
+      renderAll();
+    }
+
+    function openPinModal() {
+      document.getElementById("adminPinInput").value = "";
+      document.getElementById("pinModal").classList.add("show");
+    }
+
+    function closePinModal() {
+      document.getElementById("pinModal").classList.remove("show");
+    }
+
+    function verifyAdminPin() {
+      const pin = document.getElementById("adminPinInput").value.trim();
+      if (pin === ADMIN_PIN) {
+        state.isAdmin = true;
+        closePinModal();
+        applyRoleUI();
+        alert("অ্যাডমিন মোড চালু হয়েছে।");
+      } else {
+        alert("ভুল পিন! ডিফল্ট পিন 1234");
+      }
+    }
+
+    function lockStaffMode() {
+      state.isAdmin = false;
+      applyRoleUI();
+    }
+
+    function switchTab(tabName) {
+      document.querySelectorAll(".tab-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.tab === tabName);
+      });
+      document.querySelectorAll(".tab-panel").forEach(panel => {
+        panel.classList.toggle("hidden", panel.id !== "tab-" + tabName);
+      });
+    }
+
+    function onProjectChange() {
+      state.activeProjectId = document.getElementById("activeProjectSelect").value;
+      saveState();
+      renderAll();
+    }
+
+    function getActiveProject() {
+      return state.projects.find(p => p.id === state.activeProjectId) || state.projects[0];
+    }
+
+    function addProject(e) {
+      e.preventDefault();
+      const name = document.getElementById("projName").value.trim();
+      if (!name) return;
+      const newProj = {
+        id: "p_" + Date.now(),
+        name,
+        wo: document.getElementById("projWO").value.trim(),
+        location: document.getElementById("projLocation").value.trim(),
+        progress: Math.min(100, Math.max(0, Number(document.getElementById("projProgress").value) || 0))
+      };
+      state.projects.push(newProj);
+      state.activeProjectId = newProj.id;
+      saveState();
+      e.target.reset();
+      document.getElementById("projProgress").value = 0;
+      renderAll();
+    }
+
+    function deleteProject(id) {
+      if (!state.isAdmin) return alert("শুধু অ্যাডমিন ডিলিট করতে পারবেন।");
+      if (state.projects.length <= 1) return alert("অন্তত একটি প্রজেক্ট থাকতে হবে।");
+      if (!confirm("এই প্রজেক্ট ও এর সব হিসাব ডিলিট করবেন?")) return;
+      state.projects = state.projects.filter(p => p.id !== id);
+      state.laborEntries = state.laborEntries.filter(x => x.projectId !== id);
+      state.expenses = state.expenses.filter(x => x.projectId !== id);
+      state.progressEntries = state.progressEntries.filter(x => x.projectId !== id);
+      state.materials = state.materials.filter(x => x.projectId !== id);
+      if (state.activeProjectId === id) {
+        state.activeProjectId = state.projects[0].id;
+      }
+      saveState();
+      renderAll();
+    }
+
+    function updateTotalLaborPreview() {
+      const m = Number(document.getElementById("masonCount").value) || 0;
+      const h = Number(document.getElementById("helperCount").value) || 0;
+      document.getElementById("totalLaborPreview").value = m + h;
+    }
+
+    function handleImageUpload(event, target) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(ev) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement("canvas");
+          const maxW = 720;
+          const scale = Math.min(1, maxW / img.width);
+          canvas.width = img.width * scale;
+          canvas.height = img.height * scale;
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          const compressed = canvas.toDataURL("image/jpeg", 0.72);
+          if (target === "labor") {
+            tempLaborPhoto = compressed;
+            const prev = document.getElementById("laborPhotoPreview");
+            prev.src = compressed;
+            prev.classList.remove("hidden");
+          } else {
+            tempProgPhoto = compressed;
+            const prev = document.getElementById("progPhotoPreview");
+            prev.src = compressed;
+            prev.classList.remove("hidden");
+          }
+        };
+        img.src = ev.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function addLaborEntry(e) {
+      e.preventDefault();
+      const proj = getActiveProject();
+      const mason = Number(document.getElementById("masonCount").value) || 0;
+      const helper = Number(document.getElementById("helperCount").value) || 0;
+      const total = mason + helper;
+      if (total <= 0) return alert("মিস্ত্রি বা লেবার সংখ্যা লিখুন।");
+
+      state.laborEntries.unshift({
+        id: "l_" + Date.now(),
+        projectId: proj.id,
+        date: document.getElementById("laborDate").value,
+        mason,
+        helper,
+        total,
+        note: document.getElementById("laborNote").value.trim(),
+        photo: tempLaborPhoto
+      });
+
+      tempLaborPhoto = "";
+      document.getElementById("laborPhotoInput").value = "";
+      document.getElementById("laborPhotoPreview").classList.add("hidden");
+      document.getElementById("laborNote").value = "";
+      document.getElementById("masonCount").value = 0;
+      document.getElementById("helperCount").value = 0;
+      updateTotalLaborPreview();
+      saveState();
+      renderAll();
+    }
+
+    function addExpense(e) {
+      e.preventDefault();
+      const proj = getActiveProject();
+      const amount = Number(document.getElementById("expAmount").value) || 0;
+      const title = document.getElementById("expTitle").value.trim();
+      if (!title || amount <= 0) return;
+
+      state.expenses.unshift({
+        id: "e_" + Date.now(),
+        projectId: proj.id,
+        date: document.getElementById("expDate").value,
+        amount,
+        title,
+        note: document.getElementById("expNote").value.trim()
+      });
+
+      document.getElementById("expAmount").value = "";
+      document.getElementById("expTitle").value = "";
+      document.getElementById("expNote").value = "";
+      saveState();
+      renderAll();
+    }
+
+    function addProgressEntry(e) {
+      e.preventDefault();
+      const proj = getActiveProject();
+      const pct = Math.min(100, Math.max(0, Number(document.getElementById("progPercent").value) || 0));
+
+      state.progressEntries.unshift({
+        id: "pr_" + Date.now(),
+        projectId: proj.id,
+        date: document.getElementById("progDate").value,
+        percent: pct,
+        note: document.getElementById("progNote").value.trim(),
+        photo: tempProgPhoto
+      });
+
+      proj.progress = pct;
+      tempProgPhoto = "";
+      document.getElementById("progPhotoInput").value = "";
+      document.getElementById("progPhotoPreview").classList.add("hidden");
+      document.getElementById("progPercent").value = "";
+      document.getElementById("progNote").value = "";
+      saveState();
+      renderAll();
+    }
+
+    function toggleCustomMatName() {
+      const val = document.getElementById("matTypeSelect").value;
+      document.getElementById("customMatNameRow").classList.toggle("hidden", val !== "OTHER");
+    }
+
+    function addMaterialRequirement(e) {
+      e.preventDefault();
+      const proj = getActiveProject();
+      let name = document.getElementById("matTypeSelect").value;
+      if (name === "OTHER") {
+        name = document.getElementById("customMatName").value.trim();
+      }
+      const unit = document.getElementById("matUnit").value.trim() || "একক";
+      const requiredQty = Number(document.getElementById("matRequired").value) || 0;
+      if (!name || requiredQty <= 0) return alert("মালামালের নাম ও পরিমাণ ঠিকমতো দিন।");
+
+      const existing = state.materials.find(
+        m => m.projectId === proj.id && m.name.toLowerCase() === name.toLowerCase()
+      );
+      if (existing) {
+        existing.requiredQty += requiredQty;
+      } else {
+        state.materials.push({
+          id: "m_" + Date.now(),
+          projectId: proj.id,
+          name,
+          unit,
+          requiredQty,
+          supplies: []
+        });
+      }
+
+      document.getElementById("customMatName").value = "";
+      document.getElementById("matRequired").value = "";
+      saveState();
+      renderAll();
+    }
+
+    function addMaterialSupply(e) {
+      e.preventDefault();
+      const matId = document.getElementById("supplyMatSelect").value;
+      const qty = Number(document.getElementById("supplyQty").value) || 0;
+      const date = document.getElementById("supplyDate").value;
+      const note = document.getElementById("supplyNote").value.trim();
+      const mat = state.materials.find(m => m.id === matId);
+      if (!mat || qty <= 0) return alert("আগে প্রজেক্টের জন্য মালামাল যোগ করুন।");
+
+      mat.supplies.unshift({
+        id: "s_" + Date.now(),
+        date,
+        qty,
+        note
+      });
+
+      document.getElementById("supplyQty").value = "";
+      document.getElementById("supplyNote").value = "";
+      saveState();
+      renderAll();
+    }
+
+    function deleteItem(collection, id) {
+      if (!state.isAdmin) return alert("শুধু অ্যাডমিন ডিলিট করতে পারবেন।");
+      if (!confirm("এই এন্ট্রিটি ডিলিট করবেন?")) return;
+      state[collection] = state[collection].filter(item => item.id !== id);
+      saveState();
+      renderAll();
+    }
+
+    function deleteSupply(matId, supplyId) {
+      if (!state.isAdmin) return alert("শুধু অ্যাডমিন ডিলিট করতে পারবেন।");
+      const mat = state.materials.find(m => m.id === matId);
+      if (!mat) return;
+      mat.supplies = mat.supplies.filter(s => s.id !== supplyId);
+      saveState();
+      renderAll();
+    }
+
+    function openImgModal(src, caption) {
+      document.getElementById("modalImgEl").src = src;
+      document.getElementById("modalImgCaption").textContent = caption || "";
+      document.getElementById("imgModal").classList.add("show");
+    }
+
+    function closeImgModal() {
+      document.getElementById("imgModal").classList.remove("show");
+    }
+
+    function exportData() {
+      const blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "badc_contractor_backup.json";
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function importData(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(ev) {
+        try {
+          const parsed = JSON.parse(ev.target.result);
+          state = { ...state, ...parsed, isAdmin: false };
+          saveState();
+          renderAll();
+          alert("ব্যাকআপ সফলভাবে রিস্টোর হয়েছে।");
+        } catch {
+          alert("সঠিক JSON ব্যাকআপ ফাইল দিন।");
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function resetAllDemoData() {
+      if (!state.isAdmin) return;
+      if (!confirm("সব প্রজেক্ট ও হিসাব মুছে নতুন করে শুরু করতে চান?")) return;
+      localStorage.removeItem(STORAGE_KEY);
+      location.reload();
+    }
+
+    function renderAll() {
+      const proj = getActiveProject();
+
+      // Project Selector
+      const sel = document.getElementById("activeProjectSelect");
+      sel.innerHTML = state.projects
+        .map(p => `<option value="${p.id}" ${p.id === proj.id ? "selected" : ""}>${p.name} (${p.progress}%)</option>`)
+        .join("");
+
+      const pLabor = state.laborEntries.filter(x => x.projectId === proj.id);
+      const pExp = state.expenses.filter(x => x.projectId === proj.id);
+      const pProg = state.progressEntries.filter(x => x.projectId === proj.id);
+      const pMats = state.materials.filter(x => x.projectId === proj.id);
+
+      const totalLaborSum = pLabor.reduce((s, x) => s + x.total, 0);
+      const totalExpSum = pExp.reduce((s, x) => s + x.amount, 0);
+
+      // Stats
+      document.getElementById("statsGrid").innerHTML = `
+        <div class="stat-card">
+          <div class="stat-title">কাজের অগ্রগতি</div>
+          <div class="stat-value">${proj.progress}%</div>
+          <div class="stat-sub">${proj.wo || "ওয়ার্ক অর্ডার নোট নেই"}</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-title">মোট লেবার এন্ট্রি</div>
+          <div class="stat-value">${totalLaborSum} জন-দিন</div>
+          <div class="stat-sub">${pLabor.length}টি স্টেটমেন্ট</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-title">মোট দিন-দিন খরচ</div>
+          <div class="stat-value">৳${totalExpSum.toLocaleString()}</div>
+          <div class="stat-sub">${pExp.length}টি খরচের এন্ট্রি</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-title">ট্র্যাক করা মালামাল</div>
+          <div class="stat-value">${pMats.length} টি আইটেম</div>
+          <div class="stat-sub">${pProg.length}টি সাইট আপডেট</div>
+        </div>
+      `;
+
+      // Projects List
+      document.getElementById("projectsList").innerHTML = state.projects
+        .map(p => `
+          <div class="list-item">
+            <div class="list-item-head">
+              <div>
+                ${p.name} ${p.id === proj.id ? '<span class="pill pill-green">সক্রিয়</span>' : ""}
+                <div class="meta">${p.wo ? "WO: " + p.wo + " • " : ""}${p.location || ""}</div>
+              </div>
+              <div style="display:flex; gap:6px;">
+                <button class="btn btn-secondary" onclick="state.activeProjectId='${p.id}'; saveState(); renderAll();">সিলেক্ট</button>
+                <button class="btn btn-danger admin-only" onclick="deleteProject('${p.id}')">ডিলিট</button>
+              </div>
+            </div>
+            <div class="progress-wrap"><div class="progress-bar" style="width:${p.progress}%"></div></div>
+            <div class="meta">অগ্রগতি: ${p.progress}%</div>
+          </div>
+        `).join("");
+
+      // Labor List
+      document.getElementById("laborList").innerHTML = pLabor.length
+        ? pLabor.map(x => `
+            <div class="list-item">
+              <div class="list-item-head">
+                <div>📅 ${x.date} — মোট <b>${x.total} জন</b> (মিস্ত্রি: ${x.mason}, লেবার: ${x.helper})</div>
+                <button class="btn btn-danger admin-only" onclick="deleteItem('laborEntries','${x.id}')">ডিলিট</button>
+              </div>
+              ${x.note ? `<div class="meta">${x.note}</div>` : ""}
+              ${x.photo ? `<img src="${x.photo}" class="photo-preview" onclick="openImgModal('${x.photo}','লেবার ছবি - ${x.date}')" />` : ""}
+            </div>
+          `).join("")
+        : `<p class="meta">এই প্রজেক্টে এখনো লেবার এন্ট্রি যোগ করা হয়নি।</p>`;
+
+      // Expenses List
+      document.getElementById("expensesList").innerHTML = pExp.length
+        ? pExp.map(x => `
+            <div class="list-item">
+              <div class="list-item-head">
+                <div>📅 ${x.date} — ${x.title}</div>
+                <div style="display:flex; gap:8px; align-items:center;">
+                  <span style="color:var(--primary); font-weight:700;">৳${Number(x.amount).toLocaleString()}</span>
+                  <button class="btn btn-danger admin-only" onclick="deleteItem('expenses','${x.id}')">ডিলিট</button>
+                </div>
+              </div>
+              ${x.note ? `<div class="meta">${x.note}</div>` : ""}
+            </div>
+          `).join("")
+        : `<p class="meta">এই প্রজেক্টে এখনো কোনো খরচের হিসাব নেই।</p>`;
+
+      // Progress List
+      document.getElementById("progressList").innerHTML = pProg.length
+        ? pProg.map(x => `
+            <div class="list-item">
+              <div class="list-item-head">
+                <div>📅 ${x.date} — <b>${x.percent}% কাজ রানিং</b></div>
+                <button class="btn btn-danger admin-only" onclick="deleteItem('progressEntries','${x.id}')">ডিলিট</button>
+              </div>
+              ${x.note ? `<div class="meta">${x.note}</div>` : ""}
+              ${x.photo ? `<img src="${x.photo}" class="photo-preview" onclick="openImgModal('${x.photo}','সাইট অগ্রগতি ${x.percent}% - ${x.date}')" />` : ""}
+            </div>
+          `).join("")
+        : `<p class="meta">এই প্রজেক্টে এখনো কাজের আপডেট বা ছবি যুক্ত হয়নি।</p>`;
+
+      // Materials Dropdown + Summary + Log
+      const supSel = document.getElementById("supplyMatSelect");
+      supSel.innerHTML = pMats.length
+        ? pMats.map(m => `<option value="${m.id}">${m.name} (${m.unit})</option>`).join("")
+        : `<option value="">আগে মালামাল যোগ করুন</option>`;
+
+      document.getElementById("materialsSummaryList").innerHTML = pMats.length
+        ? pMats.map(m => {
+            const given = m.supplies.reduce((s, sp) => s + sp.qty, 0);
+            const remaining = Math.max(0, m.requiredQty - given);
+            const pct = Math.min(100, Math.round((given / m.requiredQty) * 100));
+            return `
+              <div class="list-item">
+                <div class="list-item-head">
+                  <div>${m.name} <span class="pill ${remaining === 0 ? "pill-green" : "pill-amber"}">${remaining === 0 ? "সম্পন্ন" : "বাকি আছে"}</span></div>
+                  <button class="btn btn-danger admin-only" onclick="deleteItem('materials','${m.id}')">ডিলিট</button>
+                </div>
+                <div class="meta">
+                  লাগবে: <b>${m.requiredQty} ${m.unit}</b> • দিয়েছি: <b>${given} ${m.unit}</b> • বাকি: <b>${remaining} ${m.unit}</b> (${pct}%)
+                </div>
+                <div class="progress-wrap"><div class="progress-bar" style="width:${pct}%"></div></div>
+              </div>
+            `;
+          }).join("")
+        : `<p class="meta">এই প্রজেক্টে কোনো মালামালের হিসাব যোগ করা হয়নি।</p>`;
+
+      const allSupplies = [];
+      pMats.forEach(m => {
+        m.supplies.forEach(sp => {
+          allSupplies.push({ ...sp, matName: m.name, unit: m.unit, matId: m.id });
+        });
+      });
+      allSupplies.sort((a, b) => (b.date || "").localeCompare(a.date || ""));
+
+      document.getElementById("materialSuppliesLog").innerHTML = allSupplies.length
+        ? allSupplies.map(sp => `
+            <div class="list-item">
+              <div class="list-item-head">
+                <div>📅 ${sp.date} — ${sp.matName}: <b>${sp.qty} ${sp.unit}</b></div>
+                <button class="btn btn-danger admin-only" onclick="deleteSupply('${sp.matId}','${sp.id}')">ডিলিট</button>
+              </div>
+              ${sp.note ? `<div class="meta">${sp.note}</div>` : ""}
+            </div>
+          `).join("")
+        : `<p class="meta">এখনো কোনো সরবরাহ এন্ট্রি নেই।</p>`;
+    }
+
+    loadState();
+  </script>
+</body>
+</html>
